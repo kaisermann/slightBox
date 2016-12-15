@@ -1,0 +1,42 @@
+{
+  "name": "slightly",
+  "version": "0.0.0",
+  "description": "A very very very lightweight modular lightbox.",
+  "main": "src/wrapper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaisermann/slightly.git"
+  },
+  "keywords": [
+    "lightbox",
+    "modular",
+    "lightweight",
+    "modal"
+  ],
+  "author": "Christian Kaisermann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kaisermann/slightly/issues"
+  },
+  "homepage": "https://github.com/kaisermann/slightly#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.0",
+    "gulp-better-rollup": "^1.0.2",
+    "gulp-jshint": "^2.0.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-size": "^2.0.0",
+    "gulp-strip-comments": "^2.4.3",
+    "gulp-uglify": "^2.0.0",
+    "jsdom": "9.5.0",
+    "jsdom-global": "2.1.0",
+    "jshint": "^2.9.3",
+    "mocha": "^3.1.0",
+    "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-commonjs": "^6.0.0"
+  }
+}

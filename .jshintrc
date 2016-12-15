@@ -1,0 +1,7 @@
+{
+  "eqeqeq": true,
+  "node": true,
+  "esversion": 6,
+  "browser": true,
+  "expr": true
+}

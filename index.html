@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+
+<body>
+
+	<a href="#" data-slightly data-slightly-src="http://placehold.it/1000x1000">oi 0</a>
+	<a href="#" data-slightly data-slightly-src="http://placehold.it/1000x1001">oi 1</a>
+	<a href="#" data-slightly data-slightly-src="http://placehold.it/1000x1002" data-slightly-s-c-a="a">oi 2</a>
+
+	<script src="./dist/slightly.js"></script>
+	<script>
+		var s2 = new Slightly({
+			itemSelector: '[data-slightly]'
+		});
+		//console.log(s.items);
+	</script>
+</body>
+
+</html>
