@@ -1,38 +1,39 @@
-/* Modules */
+// Modules
 import SlightlyCore from './modules/core.js';
-import SlightlyExample from './modules/example.js';
+import SlightlyGallery from './modules/gallery.js';
 
-/* Utilities */
+// Utilities
 import {
   objectAssign,
   isFunction
 } from './utils.js';
 
-const defaultOptions = {
-  itemSelector: null,
-  attrPrefix: 'data-slightly'
-};
+// Modules list
+// Edit this array to remove or add modules
+const SlightlyModules = [
+  SlightlyCore,
+  SlightlyGallery
+];
 
-const modules = [new SlightlyCore()];
-
-export default class Slightly {
-  constructor(options) {
-    const _modules = [];
-    
-    this.items = [];
-    this.current = 0;
-    this.options = objectAssign(defaultOptions, options);
-    
-    modules.forEach(m => {
-      _modules.push(m);
-      if (isFunction(m.init)) {
-        m.init.call(this);
-      }
-    });
-  }
+// Slightly Wrapper Class
+export default function Slightly(options) {
+  this.options = objectAssign(Slightly.defaultOptions, options);
+  SlightlyModules.forEach(m => {
+    if (m && isFunction(m.init)) {
+      m.init.call(this);
+    }
+  });
 }
 
-modules.forEach(m => {
-  m.public ? objectAssign(Slightly.prototype, m.public) : 0;
-  m.static ? objectAssign(Slightly, m.static) : 0;
+// Default Options
+Slightly.defaultOptions = {};
+
+// Extends each module default options, public and static methods
+SlightlyModules.forEach(module => {
+  Slightly.defaultOptions = objectAssign(Slightly.defaultOptions, module.defaultOptions || {});
+  Slightly.prototype = objectAssign(Slightly.prototype, module.public || {});
+  for (const staticKey of Object.keys(module.static || {})) {
+    Slightly[staticKey] = module.static[staticKey];
+  }
+  return module;
 });

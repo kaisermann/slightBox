@@ -5,10 +5,7 @@
 }(this, (function () { 'use strict';
 
 function SlightlyCore() {
-  if (SlightlyCore.instance) {
-    return SlightlyCore.instance;
-  }
-  var Core = SlightlyCore.instance = this;
+  var Core = this;
 
   var _private = {
     loadItems: function loadItems() {
@@ -37,7 +34,13 @@ function SlightlyCore() {
     }
   };
 
+  Core.defaultOptions = {
+    itemSelector: null,
+    attrPrefix: 'data-slightly'
+  };
+
   Core.static = {};
+
   Core.public = {
     loadItems: function loadItems(itemsList) {
       this.items = itemsList;
@@ -53,6 +56,8 @@ function SlightlyCore() {
   };
 
   Core.init = function () {
+    this.items = [];
+
     if (this.options.itemSelector && typeof this.options.itemSelector === 'string') {
       _private.loadItems.call(this);
       this.bindItems();
@@ -60,48 +65,67 @@ function SlightlyCore() {
   };
 }
 
-var objectAssign = Object.assign || function (srcObj) {
-  var arguments$1 = arguments;
+var SlightlyCore$1 = new SlightlyCore();
 
-  for (var i = 1; i < arguments.length; i++) {
-    for (var objProperty in arguments[i]) {
-      if (Object.prototype.hasOwnProperty.call(arguments$1[i], objProperty)) {
-        srcObj[objProperty] = arguments$1[i][objProperty];
-      }
+function SlightlyGallery() {
+  var Gallery = this;
+
+  var _private = {};
+
+  Gallery.defaultOptions = {};
+
+  Gallery.static = {};
+
+  Gallery.public = {};
+
+  Gallery.init = function () {};
+}
+
+var SlightlyGallery$1 = new SlightlyGallery();
+
+var objectAssign = function (tgtObj, srcObj, overwrite) {
+  if ( overwrite === void 0 ) overwrite = true;
+
+  var tmpObj = Object(tgtObj);
+  for (var i = 0, list = Object.keys(srcObj); i < list.length; i += 1) {
+    var tgtKey = list[i];
+
+    if (overwrite || !Object.prototype.hasOwnProperty.call(tgtObj, tgtKey)) {
+      tmpObj[tgtKey] = srcObj[tgtKey];
     }
   }
-  return srcObj;
+  return tmpObj;
 };
 
 var isFunction = function (fn) { return typeof fn === 'function'; };
 
-var defaultOptions = {
-  itemSelector: null,
-  attrPrefix: 'data-slightly'
-};
+var SlightlyModules = [
+  SlightlyCore$1,
+  SlightlyGallery$1
+];
 
-var modules = [new SlightlyCore()];
-
-var Slightly = function Slightly(options) {
+function Slightly(options) {
   var this$1 = this;
 
-  var _modules = [];
-
-      this.items = [];
-  this.current = 0;
-  this.options = objectAssign(defaultOptions, options);
-
-      modules.forEach(function (m) {
-    _modules.push(m);
-    if (isFunction(m.init)) {
+  this.options = objectAssign(Slightly.defaultOptions, options);
+  SlightlyModules.forEach(function (m) {
+    if (m && isFunction(m.init)) {
       m.init.call(this$1);
     }
   });
-};
+}
 
-modules.forEach(function (m) {
-  m.public ? objectAssign(Slightly.prototype, m.public) : 0;
-  m.static ? objectAssign(Slightly, m.static) : 0;
+Slightly.defaultOptions = {};
+
+SlightlyModules.forEach(function (module) {
+  Slightly.defaultOptions = objectAssign(Slightly.defaultOptions, module.defaultOptions || {});
+  Slightly.prototype = objectAssign(Slightly.prototype, module.public || {});
+  for (var i = 0, list = Object.keys(module.static || {}); i < list.length; i += 1) {
+    var staticKey = list[i];
+
+    Slightly[staticKey] = module.static[staticKey];
+  }
+  return module;
 });
 
 return Slightly;

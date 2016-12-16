@@ -1,12 +1,11 @@
-export const objectAssign = Object.assign || function (srcObj) {
-  for (let i = 1; i < arguments.length; i++) {
-    for (let objProperty in arguments[i]) {
-      if (Object.prototype.hasOwnProperty.call(arguments[i], objProperty)) {
-        srcObj[objProperty] = arguments[i][objProperty];
-      }
+export const objectAssign = function (tgtObj, srcObj, overwrite = true) {
+  const tmpObj = Object(tgtObj);
+  for (let tgtKey of Object.keys(srcObj)) {
+    if (overwrite || !Object.prototype.hasOwnProperty.call(tgtObj, tgtKey)) {
+      tmpObj[tgtKey] = srcObj[tgtKey];
     }
   }
-  return srcObj;
+  return tmpObj;
 };
 
 export const isFunction = fn => typeof fn === 'function';

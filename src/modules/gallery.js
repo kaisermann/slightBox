@@ -1,20 +1,20 @@
-function SlightlyExample() {
-  const Example = this;
+function SlightlyGallery() {
+  const Gallery = this;
   
   // Collection of private methods and properties
   const _private = {};
 
   // Default options for this module
-  Example.defaultOptions = {};
+  Gallery.defaultOptions = {};
 
   // Static methods to be mergerd with the Slightly Class
-  Example.static = {};
+  Gallery.static = {};
 
   // Public (Privileged to this file) methods to be merged with the Slightly.prototype object
-  Example.public = {};
+  Gallery.public = {};
 
   // Module Initial/Constructor method
-  Example.init = function () {};
+  Gallery.init = function () {};
 }
 
-export default new SlightlyExample();
+export default new SlightlyGallery();

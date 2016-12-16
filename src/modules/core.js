@@ -1,9 +1,7 @@
-export default function SlightlyCore() {
-  if (SlightlyCore.instance) {
-    return SlightlyCore.instance;
-  }
-  const Core = SlightlyCore.instance = this;
+function SlightlyCore() {
+  const Core = this;
 
+// Collection of private methods and properties
   const _private = {
     loadItems() {
       const nodes = document.querySelectorAll(this.options.itemSelector);
@@ -30,9 +28,16 @@ export default function SlightlyCore() {
     }
   };
 
+  // Default options for this module
+  Core.defaultOptions = {
+    itemSelector: null,
+    attrPrefix: 'data-slightly'
+  };
+
   // Static methods to be mergerd with the Slightly Class
   Core.static = {};
-  // Privileged Methods to be merged with the Slightly.prototype object
+
+  // Public (Privileged to this file) methods to be merged with the Slightly.prototype object
   Core.public = {
     loadItems(itemsList) {
       this.items = itemsList;
@@ -45,7 +50,10 @@ export default function SlightlyCore() {
     }
   };
 
+  // Module Initial/Constructor method
   Core.init = function () {
+    this.items = [];
+
     // Is a selector setted? If yes, let's search for the items
     if (this.options.itemSelector && typeof this.options.itemSelector === 'string') {
       _private.loadItems.call(this);
@@ -53,3 +61,5 @@ export default function SlightlyCore() {
     }
   };
 }
+
+export default new SlightlyCore();
